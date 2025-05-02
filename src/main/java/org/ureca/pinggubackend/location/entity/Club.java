@@ -17,10 +17,6 @@ import java.util.List;
 @Getter
 public class Club extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long clubId;
-
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recruit> recruits = new ArrayList<>();
 

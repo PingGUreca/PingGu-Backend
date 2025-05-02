@@ -14,10 +14,6 @@ import org.ureca.pinggubackend.recruit.entity.Recruit;
 @Getter
 public class Apply extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long applyId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

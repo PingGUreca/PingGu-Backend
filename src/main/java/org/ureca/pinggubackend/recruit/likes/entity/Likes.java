@@ -14,10 +14,6 @@ import org.ureca.pinggubackend.recruit.entity.Recruit;
 @Getter
 public class Likes extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likesId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
