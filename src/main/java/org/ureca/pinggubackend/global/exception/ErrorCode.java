@@ -1,4 +1,4 @@
-package org.ureca.pinggubackend.error.common;
+package org.ureca.pinggubackend.global.exception;
 
 import org.springframework.http.HttpStatus;
 

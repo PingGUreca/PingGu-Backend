@@ -1,12 +1,13 @@
-package org.ureca.pinggubackend.error.common;
+package org.ureca.pinggubackend.global.exception.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.ureca.pinggubackend.global.exception.ErrorCode;
 
 @Getter
 @AllArgsConstructor
-public enum CommonErrorCode implements ErrorCode{
+public enum CommonErrorCode implements ErrorCode {
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "001", "잘못된 입력값입니다."),
     INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "002", "잘못된 타입입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "내부 서버 오류가 발생했습니다.");

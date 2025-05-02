@@ -1,4 +1,4 @@
-package org.ureca.pinggubackend.error.common;
+package org.ureca.pinggubackend.global.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -9,14 +9,14 @@ public class BaseException extends RuntimeException{
     private final String code;
     private final String message;
 
-    protected BaseException(HttpStatus status, String code, String message) {
+    private BaseException(HttpStatus status, String code, String message) {
         super(message);
         this.status = status;
         this.code = code;
         this.message = message;
     }
 
-    public BaseException(ErrorCode errorCode) {
+    protected BaseException(ErrorCode errorCode) {
         this(
                 errorCode.getStatus(),
                 errorCode.getFullCode(),
