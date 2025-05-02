@@ -1,18 +1,18 @@
-package org.ureca.pinggubackend.recruit.apply.entity;
+package org.ureca.pinggubackend.domain.likes.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
-import org.ureca.pinggubackend.member.entity.Member;
-import org.ureca.pinggubackend.recruit.entity.Recruit;
+import org.ureca.pinggubackend.domain.member.entity.Member;
+import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Apply extends BaseEntity {
+public class Likes extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")

@@ -1,12 +1,11 @@
-package org.ureca.pinggubackend.location.entity;
+package org.ureca.pinggubackend.domain.location.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
-import org.ureca.pinggubackend.recruit.apply.entity.Apply;
-import org.ureca.pinggubackend.recruit.entity.Recruit;
+import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 
 import java.util.ArrayList;
 import java.util.List;
