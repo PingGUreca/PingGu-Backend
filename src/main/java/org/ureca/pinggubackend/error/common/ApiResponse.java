@@ -2,10 +2,12 @@ package org.ureca.pinggubackend.error.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,6 +25,10 @@ public record ApiResponse<T>(
 
     public static <T> ApiResponse<T> created(@Nullable final T data) {
         return new ApiResponse<>(HttpStatus.CREATED, true, data, null);
+    }
+
+    public static <T> ApiResponse<T> of(T data) {
+        return new ApiResponse<>(HttpStatus.OK, true, data, null);
     }
 
     public static <T> ApiResponse<T> fail(final BaseException e) {
