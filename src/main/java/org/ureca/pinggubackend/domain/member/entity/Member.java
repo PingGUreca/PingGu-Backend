@@ -1,16 +1,16 @@
-package org.ureca.pinggubackend.member.entity;
+package org.ureca.pinggubackend.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
-import org.ureca.pinggubackend.member.enums.Gender;
-import org.ureca.pinggubackend.member.enums.Level;
-import org.ureca.pinggubackend.member.enums.MainHand;
-import org.ureca.pinggubackend.member.enums.Racket;
-import org.ureca.pinggubackend.recruit.apply.entity.Apply;
-import org.ureca.pinggubackend.recruit.likes.entity.Likes;
+import org.ureca.pinggubackend.domain.member.enums.Gender;
+import org.ureca.pinggubackend.domain.member.enums.Level;
+import org.ureca.pinggubackend.domain.member.enums.MainHand;
+import org.ureca.pinggubackend.domain.member.enums.Racket;
+import org.ureca.pinggubackend.domain.apply.entity.Apply;
+import org.ureca.pinggubackend.domain.likes.entity.Likes;
 
 import java.util.ArrayList;
 import java.util.List;
