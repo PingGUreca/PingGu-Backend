@@ -1,9 +1,7 @@
 package org.ureca.pinggubackend.domain.recruit.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
@@ -18,8 +16,9 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class Recruit extends BaseEntity {
 
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.ALL, orphanRemoval = true)

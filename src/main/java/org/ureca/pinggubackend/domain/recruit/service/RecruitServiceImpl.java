@@ -1,0 +1,75 @@
+package org.ureca.pinggubackend.domain.recruit.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.ureca.pinggubackend.domain.location.entity.Club;
+import org.ureca.pinggubackend.domain.location.repository.ClubRepository;
+import org.ureca.pinggubackend.domain.recruit.dto.RecruitGetDto;
+import org.ureca.pinggubackend.domain.recruit.dto.RecruitPostDto;
+import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
+import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepository;
+import org.ureca.pinggubackend.global.exception.BaseException;
+import org.ureca.pinggubackend.global.exception.ErrorCode;
+
+import static org.ureca.pinggubackend.global.exception.common.CommonErrorCode.INTERNAL_SERVER_ERROR;
+import static org.ureca.pinggubackend.global.exception.common.CommonErrorCode.INVALID_INPUT_VALUE;
+
+@RequiredArgsConstructor
+@Service
+public class RecruitServiceImpl implements RecruitService {
+
+    private final ClubRepository clubRepository;
+    private final RecruitRepository recruitRepository;
+
+    public Long postRecruit(RecruitPostDto recruitPostDto) {
+        Recruit recruit = mapToRecruit(recruitPostDto);
+        recruitRepository.save(recruit);
+        return recruit.getId();
+    }
+
+    public RecruitGetDto getRecruit(Long recruitId) {
+        Recruit recruit = recruitRepository.findById(recruitId)
+                .orElseThrow(() -> BaseException.of(INVALID_INPUT_VALUE));
+        return mapToRecruitDto(recruit);
+    }
+
+    private Recruit mapToRecruit(RecruitPostDto recruitPostDto) {
+        Club club = clubRepository.findById(recruitPostDto.getClubId())
+                .orElseThrow(() -> BaseException.of(INVALID_INPUT_VALUE));
+
+        Recruit recruit = Recruit.builder()
+                .date(recruitPostDto.getDate())
+                .level(recruitPostDto.getLevel())
+                .title(recruitPostDto.getTitle())
+                .document(recruitPostDto.getDocument())
+                .chatUrl(recruitPostDto.getChatUrl())
+                .current(0)
+                .racket(recruitPostDto.getRacket())
+                .capacity(recruitPostDto.getCapacity())
+                .gender(recruitPostDto.getGender())
+                .club(club)
+                .build();
+
+        return recruit;
+    }
+
+    private RecruitGetDto mapToRecruitDto(Recruit recruit) {
+        Club club = clubRepository.findById(recruit.getId())
+                .orElseThrow(() -> BaseException.of(INTERNAL_SERVER_ERROR));
+
+        RecruitGetDto recruitGetDto = RecruitGetDto.builder()
+                .clubName(club.getName())
+                .location(club.getGu())
+                .capacity(recruit.getCapacity())
+                .level(recruit.getLevel())
+                .gender(recruit.getGender())
+                .racket(recruit.getRacket())
+                .date(recruit.getDate())
+                .chatUrl(recruit.getChatUrl())
+                .title(recruit.getTitle())
+                .document(recruit.getDocument())
+                .build();
+
+        return recruitGetDto;
+    }
+}
