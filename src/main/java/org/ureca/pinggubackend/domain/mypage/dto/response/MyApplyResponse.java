@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -14,13 +15,8 @@ public class MyApplyResponse {
     private final String title;
     private final List<String> club;
     private final String date;
-    private final Integer capacity;
-    private final Integer current;
-    private final String gender;
-    private final String level;
-    private final String racket;
-    private final String document;
     private final String chatUrl;
+    private final String status;
 
 
     public static MyApplyResponse from(Recruit recruit) {
@@ -28,14 +24,9 @@ public class MyApplyResponse {
                 recruit.getId(),
                 recruit.getTitle(),
                 List.of(recruit.getClub().getName(), recruit.getClub().getAddress()),
-                recruit.getClub().getGu(),
-                recruit.getCapacity(),
-                recruit.getCurrent(),
-                recruit.getGender().toString(),
-                recruit.getLevel().toString(),
-                recruit.getRacket().toString(),
-                recruit.getDocument(),
-                recruit.getChatUrl()
+                recruit.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")),
+                recruit.getChatUrl(),
+                recruit.getStatus() ? "모집 진행중" : "모집 종료"
         );
     }
 }
