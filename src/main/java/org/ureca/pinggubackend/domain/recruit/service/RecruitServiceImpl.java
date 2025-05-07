@@ -8,9 +8,13 @@ import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
 import org.ureca.pinggubackend.domain.recruit.dto.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.RecruitPostDto;
+import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepository;
 import org.ureca.pinggubackend.global.exception.BaseException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.ureca.pinggubackend.global.exception.common.CommonErrorCode.INTERNAL_SERVER_ERROR;
 import static org.ureca.pinggubackend.global.exception.common.CommonErrorCode.INVALID_INPUT_VALUE;
@@ -81,4 +85,10 @@ public class RecruitServiceImpl implements RecruitService {
 
         return recruitGetDto;
     }
+
+    // 임시!
+    public List<RecruitResponse> getRecruitsByMemberId(Long memberId) {
+        return new ArrayList<>();
+    }
+
 }
