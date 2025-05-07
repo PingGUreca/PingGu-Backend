@@ -17,7 +17,7 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @Builder
 public class Recruit extends BaseEntity {
@@ -64,5 +64,8 @@ public class Recruit extends BaseEntity {
 
     @Column(nullable = false)
     private String chatUrl;
+
+    @Column(nullable = false)
+    private Boolean status;
 
 }

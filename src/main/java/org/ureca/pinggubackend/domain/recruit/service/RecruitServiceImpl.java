@@ -53,6 +53,7 @@ public class RecruitServiceImpl implements RecruitService {
                 .capacity(recruitPostDto.getCapacity())
                 .gender(recruitPostDto.getGender())
                 .club(club)
+                .status(false)
                 .build();
 
         return recruit;
@@ -63,8 +64,8 @@ public class RecruitServiceImpl implements RecruitService {
                 .orElseThrow(() -> BaseException.of(INTERNAL_SERVER_ERROR));
 
         RecruitGetDto recruitGetDto = RecruitGetDto.builder()
-                .userId(recruit.getMember().getId())
-                .userName(recruit.getMember().getName())
+//                .userId(recruit.getMember().getId())
+//                .userName(recruit.getMember().getName())
                 .clubName(club.getName())
                 .location(club.getGu())
                 .capacity(recruit.getCapacity())
@@ -75,6 +76,7 @@ public class RecruitServiceImpl implements RecruitService {
                 .chatUrl(recruit.getChatUrl())
                 .title(recruit.getTitle())
                 .document(recruit.getDocument())
+//                .status(recruit.getStatus())
                 .build();
 
         return recruitGetDto;

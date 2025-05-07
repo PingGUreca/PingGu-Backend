@@ -35,4 +35,6 @@ public class RecruitGetDto {
     private String document;
 
     private String chatUrl;
+
+    private Boolean status;
 }
