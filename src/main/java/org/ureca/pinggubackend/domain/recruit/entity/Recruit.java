@@ -2,6 +2,7 @@ package org.ureca.pinggubackend.domain.recruit.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
@@ -30,6 +31,10 @@ public class Recruit extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     private LocalDate date;

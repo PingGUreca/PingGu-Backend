@@ -11,6 +11,11 @@ import java.time.LocalDate;
 @Getter
 @Builder
 public class RecruitGetDto {
+
+    private Long userId;
+
+    private String userName;
+
     private String clubName;
 
     private String location;
