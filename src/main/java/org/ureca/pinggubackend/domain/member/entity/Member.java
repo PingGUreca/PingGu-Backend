@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.ureca.pinggubackend.domain.mypage.dto.request.MyProfileUpdate;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
