@@ -1,21 +1,18 @@
-package org.ureca.pinggubackend.domain.recruit.dto.response;
+package org.ureca.pinggubackend.domain.mypage.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import org.ureca.pinggubackend.domain.location.entity.Club;
+import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class RecruitResponse {
+public class MyApplyResponse {
     private final Long id;
     private final String title;
     private final List<String> club;
-    private final String gu;
     private final String date;
     private final Integer capacity;
     private final Integer current;
@@ -26,13 +23,12 @@ public class RecruitResponse {
     private final String chatUrl;
 
 
-    public static RecruitResponse from(Recruit recruit) {
-        return new RecruitResponse(
+    public static MyApplyResponse from(Recruit recruit) {
+        return new MyApplyResponse(
                 recruit.getId(),
                 recruit.getTitle(),
                 List.of(recruit.getClub().getName(), recruit.getClub().getAddress()),
                 recruit.getClub().getGu(),
-                recruit.getDate().toString(),
                 recruit.getCapacity(),
                 recruit.getCurrent(),
                 recruit.getGender().toString(),

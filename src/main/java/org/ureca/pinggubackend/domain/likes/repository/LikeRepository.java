@@ -13,7 +13,5 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     int countByRecruitId(Long recruitId);
 
-    int countByMemberId(Long memberId);
-
     List<Likes> findByMemberId(Long memberId);
 }
