@@ -31,7 +31,7 @@ public class MyPageController {
      * @return 마이페이지
      */
     @GetMapping("/{Id}")
-    public ResponseEntity<?> getMyPage(@PathVariable Long Id) {
+    public ResponseEntity<MyProfileResponse> getMyPage(@PathVariable Long Id) {
         MyProfileResponse myPageResponse = myPageService.getMyPageInfo(Id);
         return ResponseEntity.ok(myPageResponse);
     }

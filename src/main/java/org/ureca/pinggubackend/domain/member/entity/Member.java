@@ -56,19 +56,4 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private Racket racket;
 
-    public void updateProfile(MyProfileUpdate request) {
-        if (request.getName() != null) {
-            this.name = request.getName();
-        }
-        if (request.getLevel() != null) {
-            this.level = request.getLevel();
-        }
-        if (request.getMainHand() != null) {
-            this.mainHand = request.getMainHand();
-        }
-        if (request.getRacket() != null) {
-            this.racket = request.getRacket();
-        }
-    }
-
 }
