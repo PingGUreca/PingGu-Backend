@@ -3,6 +3,8 @@ package org.ureca.pinggubackend.domain.recruit.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.ureca.pinggubackend.domain.member.entity.Member;
+import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
 import org.ureca.pinggubackend.domain.recruit.dto.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
