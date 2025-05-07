@@ -93,7 +93,7 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     private RecruitGetDto mapToRecruitDto(Recruit recruit) {
-        Club club = clubRepository.findById(recruit.getId())
+        Club club = clubRepository.findById(recruit.getClub().getId())
                 .orElseThrow(() -> BaseException.of(INTERNAL_SERVER_ERROR));
 
         RecruitGetDto recruitGetDto = RecruitGetDto.builder()
