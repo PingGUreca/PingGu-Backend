@@ -20,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Builder
+@Setter
 public class Recruit extends BaseEntity {
 
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.ALL, orphanRemoval = true)
