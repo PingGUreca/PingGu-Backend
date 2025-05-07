@@ -1,9 +1,8 @@
 package org.ureca.pinggubackend.domain.recruit.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
@@ -20,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Recruit extends BaseEntity {
 
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -31,6 +31,10 @@ public class Recruit extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -60,5 +64,8 @@ public class Recruit extends BaseEntity {
 
     @Column(nullable = false)
     private String chatUrl;
+
+    @Column(nullable = false)
+    private Boolean status;
 
 }

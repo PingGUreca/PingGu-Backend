@@ -1,0 +1,32 @@
+package org.ureca.pinggubackend.domain.recruit.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.ureca.pinggubackend.domain.member.enums.Gender;
+import org.ureca.pinggubackend.domain.member.enums.Level;
+import org.ureca.pinggubackend.domain.member.enums.Racket;
+
+import java.time.LocalDate;
+
+@Getter
+@AllArgsConstructor
+public class RecruitPostDto {
+
+    private Long clubId;
+
+    private LocalDate date;
+
+    private Integer capacity;
+
+    private Gender gender;
+
+    private Level level;
+
+    private Racket racket;
+
+    private String title;
+
+    private String document;
+
+    private String chatUrl;
+}

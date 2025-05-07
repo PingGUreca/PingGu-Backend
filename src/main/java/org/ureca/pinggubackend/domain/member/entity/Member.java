@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.ureca.pinggubackend.domain.mypage.dto.request.MyProfileUpdate;
+import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
@@ -27,6 +27,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Apply> applies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Recruit> recruitList = new ArrayList<>();
 
     @Column(unique = true, nullable = false)
     private String email;
