@@ -25,21 +25,21 @@ public class RecruitController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping("")
-    public ResponseEntity<RecruitGetDto> getRecruit(Long recruitId) {
+    @GetMapping("/{recruitId}")
+    public ResponseEntity<RecruitGetDto> getRecruit(@PathVariable Long recruitId) {
         RecruitGetDto recruitGetDto = recruitService.getRecruit(recruitId);
         return ResponseEntity.ok(recruitGetDto);
     }
 
-    @PutMapping("")
-    public ResponseEntity<Void> putRecruit(Long recruitId, @RequestBody RecruitPutDto recruitPutDto) {
+    @PutMapping("/{recruitId}")
+    public ResponseEntity<Void> putRecruit(@PathVariable Long recruitId, @RequestBody RecruitPutDto recruitPutDto) {
         // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
         recruitService.putRecruit(recruitId, recruitPutDto);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<Void> deleteMapping(Long recruitId) {
+    @DeleteMapping("/{recruitId}")
+    public ResponseEntity<Void> deleteMapping(@PathVariable Long recruitId) {
         // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
         recruitService.deleteRecruit(recruitId);
         return ResponseEntity.ok().build();
