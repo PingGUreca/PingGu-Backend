@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.ureca.pinggubackend.domain.mypage.dto.request.MyProfileUpdate;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
@@ -54,5 +55,20 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Racket racket;
+
+    public void updateProfile(MyProfileUpdate request) {
+        if (request.getName() != null) {
+            this.name = request.getName();
+        }
+        if (request.getLevel() != null) {
+            this.level = request.getLevel();
+        }
+        if (request.getMainHand() != null) {
+            this.mainHand = request.getMainHand();
+        }
+        if (request.getRacket() != null) {
+            this.racket = request.getRacket();
+        }
+    }
 
 }
