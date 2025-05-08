@@ -4,12 +4,17 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.ureca.pinggubackend.domain.member.enums.Gender;
+import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
+import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,6 +22,17 @@ import java.net.URI;
 public class RecruitController {
 
     private final RecruitService recruitService;
+
+    @GetMapping
+    public ResponseEntity<List<RecruitPreviewListResponse>> getFilteredRecruits(
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) String gu,
+            @RequestParam(required = false) Level level,
+            @RequestParam(required = false) Gender gender
+    ){
+        List<RecruitPreviewListResponse> result = recruitService.getRecruitPreviewList(date,gu,level,gender);
+        return ResponseEntity.ok(result);
+    }
 
     @PostMapping("")
     public ResponseEntity<Void> postRecruit(@RequestBody RecruitPostDto recruitPostDto) {
