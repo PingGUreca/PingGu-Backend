@@ -1,25 +1,31 @@
 package org.ureca.pinggubackend.domain.recruit.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.location.repository.ClubRepository;
 import org.ureca.pinggubackend.domain.member.entity.Member;
+import org.ureca.pinggubackend.domain.member.enums.Gender;
+import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
-
+import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
+import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepository;
+import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepositoryCustom;
 import org.ureca.pinggubackend.global.exception.recruit.RecruitException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import static org.ureca.pinggubackend.global.exception.recruit.RecruitErrorCode.*;
-
 import java.util.stream.Collectors;
+
+import static org.ureca.pinggubackend.global.exception.recruit.RecruitErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +34,7 @@ public class RecruitServiceImpl implements RecruitService {
     private final ClubRepository clubRepository;
     private final RecruitRepository recruitRepository;
     private final MemberRepository memberRepository;
+    private final RecruitRepositoryCustom recruitRepositoryCustom;
 
     public Long postRecruit(RecruitPostDto recruitPostDto) {
         Member member = memberRepository.findById(1L).get(); // 로그인 개발전까지 임시로 사용합니다.
@@ -71,6 +78,17 @@ public class RecruitServiceImpl implements RecruitService {
         }
 
         recruitRepository.deleteById(recruitId);
+    }
+
+    @Override
+    public Page<RecruitPreviewListResponse> getRecruitPreviewList(
+            LocalDate date,
+            String gu,
+            Level level,
+            Gender gender,
+            Pageable pageable
+    ) {
+        return recruitRepositoryCustom.getRecruitPreviewList(date, gu, level, gender,pageable);
     }
 
     private Recruit mapToRecruit(Member member, RecruitPostDto recruitPostDto) {
