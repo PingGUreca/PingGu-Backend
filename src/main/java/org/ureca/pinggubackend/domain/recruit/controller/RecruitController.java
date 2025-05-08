@@ -1,5 +1,6 @@
 package org.ureca.pinggubackend.domain.recruit.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class RecruitController {
     }
 
     @PutMapping("/{recruitId}")
-    public ResponseEntity<Void> putRecruit(@PathVariable Long recruitId, @RequestBody RecruitPutDto recruitPutDto) {
+    public ResponseEntity<Void> putRecruit(@PathVariable Long recruitId, @RequestBody @Valid RecruitPutDto recruitPutDto) {
         // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
         recruitService.putRecruit(recruitId, recruitPutDto);
         return ResponseEntity.ok().build();
