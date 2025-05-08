@@ -52,7 +52,10 @@ public class RecruitServiceImpl implements RecruitService {
             throw RecruitException.of(FORBIDDEN_RECRUIT_ACCESS);
         }
 
-        updateRecruit(recruit, recruitPutDto);
+        Club club = clubRepository.findById(recruitPutDto.getClubId())
+                .orElseThrow(() -> RecruitException.of(INVALID_CLUB));
+
+        recruit.updateRecruit(club, recruitPutDto);
         recruitRepository.save(recruit);
     }
 
@@ -112,21 +115,6 @@ public class RecruitServiceImpl implements RecruitService {
                 .build();
 
         return recruitGetDto;
-    }
-
-    private void updateRecruit(Recruit recruit, RecruitPutDto recruitPutDto) {
-        Club club = clubRepository.findById(recruitPutDto.getClubId())
-                .orElseThrow(() -> RecruitException.of(INVALID_CLUB));
-
-        recruit.setClub(club);
-        recruit.setDate(recruitPutDto.getDate());
-        recruit.setGender(recruitPutDto.getGender());
-        recruit.setLevel(recruit.getLevel());
-        recruit.setRacket(recruit.getRacket());
-        recruit.setTitle(recruitPutDto.getTitle());
-        recruit.setDocument(recruit.getDocument());
-        recruit.setChatUrl(recruitPutDto.getChatUrl());
-
     }
 
     // 임시!
