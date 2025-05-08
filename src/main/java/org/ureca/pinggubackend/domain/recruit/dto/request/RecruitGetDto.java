@@ -1,4 +1,4 @@
-package org.ureca.pinggubackend.domain.recruit.dto;
+package org.ureca.pinggubackend.domain.recruit.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

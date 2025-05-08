@@ -3,6 +3,7 @@ package org.ureca.pinggubackend.domain.recruit.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.ureca.pinggubackend.domain.member.entity.Member;
+import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
@@ -67,5 +68,16 @@ public class Recruit extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean status;
+
+    public void updateRecruit(Club club, RecruitPutDto dto) {
+        this.club = club;
+        this.date = dto.getDate();
+        this.gender = dto.getGender();
+        this.level = dto.getLevel();
+        this.racket = dto.getRacket();
+        this.title = dto.getTitle();
+        this.document = dto.getDocument();
+        this.chatUrl = dto.getChatUrl();
+    }
 
 }
