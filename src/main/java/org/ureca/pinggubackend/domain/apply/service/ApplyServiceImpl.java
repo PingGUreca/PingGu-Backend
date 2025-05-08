@@ -29,4 +29,12 @@ public class ApplyServiceImpl implements ApplyService{
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public void cancelApply(Long memberId, Long recruitId){
+        Apply apply = applyRepository.findByMemberIdAndRecruitId(memberId, recruitId)
+                .orElseThrow(() -> BaseException.of(CommonErrorCode.APPLY_NOT_FOUND));
+
+        applyRepository.delete(apply);
+    }
 }

@@ -1,19 +1,13 @@
 package org.ureca.pinggubackend.domain.mypage.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.Get;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ureca.pinggubackend.domain.mypage.dto.request.MyPageUpdateRequest;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageCancelResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageDeleteResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageUpdateResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyApplyResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyLikeResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyProfileResponse;
+import org.ureca.pinggubackend.domain.mypage.dto.response.*;
 import org.ureca.pinggubackend.domain.mypage.service.MyPageService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
