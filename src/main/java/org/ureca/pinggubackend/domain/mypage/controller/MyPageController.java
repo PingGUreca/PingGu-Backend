@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ureca.pinggubackend.domain.mypage.dto.request.MyPageUpdateRequest;
+import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageCancelResponse;
+import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageDeleteResponse;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageUpdateResponse;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyPageResponse;
 import org.ureca.pinggubackend.domain.mypage.service.MyPageService;
@@ -27,5 +29,20 @@ public class MyPageController {
             @RequestBody MyPageUpdateRequest request
     ){
         return ResponseEntity.ok(myPageService.editProfile(memberId,request));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<MyPageDeleteResponse> deleteMember(
+            @RequestParam long memberId // TODO - JWT 구현 이후 변경 예정
+    ){
+        return ResponseEntity.ok(myPageService.deleteMember(memberId));
+    }
+
+    @PostMapping("/applies")
+    public ResponseEntity<MyPageCancelResponse> cancelApply(
+            @RequestParam long memberId, // TODO - JWT 구현 이후 변경 예정
+            @RequestParam long recruitId
+    ){
+        return ResponseEntity.ok(myPageService.cancelApply(memberId,recruitId));
     }
 }
