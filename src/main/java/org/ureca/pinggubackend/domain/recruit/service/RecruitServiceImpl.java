@@ -6,19 +6,20 @@ import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.location.repository.ClubRepository;
 import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
+
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
+import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepository;
 import org.ureca.pinggubackend.global.exception.recruit.RecruitException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import static org.ureca.pinggubackend.global.exception.recruit.RecruitErrorCode.*;
+
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -117,9 +118,12 @@ public class RecruitServiceImpl implements RecruitService {
         return recruitGetDto;
     }
 
-    // 임시!
-    public List<RecruitResponse> getRecruitsByMemberId(Long memberId) {
-        return new ArrayList<>();
-    }
+    @Override
+    public List<MyRecruitResponse> getRecruitListByMemberId(Long memberId) {
+        List<Recruit> recruits = recruitRepository.findByMemberId(memberId);
 
+        return recruits.stream()
+                .map(recruit -> MyRecruitResponse.from(recruit))
+                .collect(Collectors.toList());
+    }
 }
