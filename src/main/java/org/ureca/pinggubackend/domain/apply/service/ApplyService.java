@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ApplyService {
     List<MyApplyResponse> getMyApplies(Long memberId);
+    void cancelApply(Long memberId, Long recruitId);
 }

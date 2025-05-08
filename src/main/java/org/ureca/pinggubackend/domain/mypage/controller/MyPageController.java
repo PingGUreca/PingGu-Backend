@@ -1,22 +1,11 @@
 package org.ureca.pinggubackend.domain.mypage.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.Get;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.ureca.pinggubackend.domain.apply.service.ApplyService;
-import org.ureca.pinggubackend.domain.likes.service.LikeService;
-import org.ureca.pinggubackend.domain.member.service.MemberService;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyApplyResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyLikeResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyProfileResponse;
-import org.ureca.pinggubackend.domain.mypage.dto.request.MyProfileUpdate;
-import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
+import org.ureca.pinggubackend.domain.mypage.dto.request.MyPageUpdateRequest;
+import org.ureca.pinggubackend.domain.mypage.dto.response.*;
 import org.ureca.pinggubackend.domain.mypage.service.MyPageService;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
-import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 
 import java.util.List;
 
@@ -24,17 +13,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/mypage")
 public class MyPageController {
-
+  
     private final MyPageService myPageService;
 
-    /**
-     * @param Id
-     * @return 마이페이지
-     */
-    @GetMapping("/{Id}")
-    public ResponseEntity<MyProfileResponse> getMyPage(@PathVariable Long Id) {
-        MyProfileResponse myPageResponse = myPageService.getMyPageInfo(Id);
-        return ResponseEntity.ok(myPageResponse);
+    @GetMapping
+    public ResponseEntity<MyPageResponse> getMyPage(
+            @RequestParam long memberId // TODO - JWT 구현 이후 변경 예정
+    ){
+        return ResponseEntity.ok(myPageService.getMyPage(memberId));
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<MyPageUpdateResponse> editProfile(
+            @RequestParam long memberId, // TODO - JWT 구현 이후 변경 예정
+            @RequestBody MyPageUpdateRequest request
+    ){
+        return ResponseEntity.ok(myPageService.editProfile(memberId,request));
+    }
+  
+    @DeleteMapping
+    public ResponseEntity<MyPageDeleteResponse> deleteMember(
+            @RequestParam long memberId // TODO - JWT 구현 이후 변경 예정
+    ){
+        return ResponseEntity.ok(myPageService.deleteMember(memberId));
     }
 
     @GetMapping("/applies")
@@ -55,7 +56,11 @@ public class MyPageController {
         return ResponseEntity.ok(response);
     }
 
-
-    // TODO: 내 좋아요 취소, 내 신청 취소 -> 해당 게시글 상세 조회 시, 해당 게시글의 좋아요, 신청에 내가 있을 때 삭제 / 없을 때 신청
-    // -> RecruitController 에서 하기
+    @PostMapping("/applies")
+    public ResponseEntity<MyPageCancelResponse> cancelApply(
+            @RequestParam long memberId, // TODO - JWT 구현 이후 변경 예정
+            @RequestParam long recruitId
+    ){
+        return ResponseEntity.ok(myPageService.cancelApply(memberId,recruitId));
+    }
 }

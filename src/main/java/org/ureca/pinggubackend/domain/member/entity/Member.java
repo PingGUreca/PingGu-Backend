@@ -59,4 +59,19 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private Racket racket;
 
+    public void updateProfile(
+            String name,
+            Gender gender,
+            String gu,
+            Level level,
+            MainHand mainHand,
+            Racket racket
+    ) {
+        this.name = name;
+        this.gender = gender;
+        this.gu = gu;
+        this.level = level;
+        this.mainHand = mainHand;
+        this.racket = racket;
+    }
 }

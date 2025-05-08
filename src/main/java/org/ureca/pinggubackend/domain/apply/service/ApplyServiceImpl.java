@@ -2,6 +2,7 @@ package org.ureca.pinggubackend.domain.apply.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.ureca.pinggubackend.domain.apply.entity.Apply;
 import org.ureca.pinggubackend.domain.apply.repository.ApplyRepository;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyApplyResponse;
@@ -29,4 +30,13 @@ public class ApplyServiceImpl implements ApplyService{
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    @Transactional
+    public void cancelApply(Long memberId, Long recruitId){
+        Apply apply = applyRepository.findByMemberIdAndRecruitId(memberId, recruitId)
+                .orElseThrow(() -> BaseException.of(CommonErrorCode.APPLY_NOT_FOUND));
+
+        applyRepository.delete(apply);
+    }
 }

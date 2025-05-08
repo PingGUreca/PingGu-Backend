@@ -2,14 +2,10 @@ package org.ureca.pinggubackend.domain.mypage.dto.response;
 
 import lombok.*;
 import org.ureca.pinggubackend.domain.member.entity.Member;
-import org.ureca.pinggubackend.domain.member.enums.Gender;
-import org.ureca.pinggubackend.domain.member.enums.Level;
-import org.ureca.pinggubackend.domain.member.enums.MainHand;
-import org.ureca.pinggubackend.domain.member.enums.Racket;
 
 @Getter
 @AllArgsConstructor
-public class MyProfileResponse {
+public class MyPageResponse {
     private final String name;
     private final String gender;
     private final String gu;
@@ -17,8 +13,8 @@ public class MyProfileResponse {
     private final String mainHand;
     private final String racket;
 
-    public static MyProfileResponse from(Member member) {
-        return new MyProfileResponse(
+    public static MyPageResponse from(Member member) {
+        return new MyPageResponse(
                 member.getName(),
                 member.getGender().toString(),
                 member.getGu(),
