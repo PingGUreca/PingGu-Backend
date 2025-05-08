@@ -2,6 +2,9 @@ package org.ureca.pinggubackend.domain.recruit.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
@@ -14,7 +17,6 @@ import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,13 +26,16 @@ public class RecruitController {
     private final RecruitService recruitService;
 
     @GetMapping
-    public ResponseEntity<List<RecruitPreviewListResponse>> getFilteredRecruits(
+    public ResponseEntity<Page<RecruitPreviewListResponse>> getFilteredRecruits(
             @RequestParam(required = false) LocalDate date,
             @RequestParam(required = false) String gu,
             @RequestParam(required = false) Level level,
-            @RequestParam(required = false) Gender gender
+            @RequestParam(required = false) Gender gender,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ){
-        List<RecruitPreviewListResponse> result = recruitService.getRecruitPreviewList(date,gu,level,gender);
+        Pageable pageable = PageRequest.of(page,size);
+        Page<RecruitPreviewListResponse> result = recruitService.getRecruitPreviewList(date,gu,level,gender,pageable);
         return ResponseEntity.ok(result);
     }
 
