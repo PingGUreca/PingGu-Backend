@@ -10,7 +10,6 @@ import org.ureca.pinggubackend.domain.mypage.dto.response.MyApplyResponse;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyLikeResponse;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyProfileResponse;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 import org.ureca.pinggubackend.global.exception.BaseException;
 
@@ -34,11 +33,11 @@ public class MyPageService {
     }
 
     public List<MyApplyResponse> getMyApplies(Long memberId) {
-        return applyService.getApplyListByMemberId(memberId);
+        return applyService.getMyApplies(memberId);
     }
 
     public List<MyLikeResponse> getMyLikes(Long memberId) {
-        return likeService.getLikeListByMemberId(memberId);
+        return likeService.getLikedRecruitList(memberId);
     }
 
     public List<MyRecruitResponse> getMyRecruits(Long memberId) {

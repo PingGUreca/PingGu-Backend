@@ -22,7 +22,7 @@ public class LikeServiceImpl implements LikeService {
     private final LikeRepository likeRepository;
 
     @Override
-    public List<MyLikeResponse> getLikeListByMemberId(Long memberId) {
+    public List<MyLikeResponse> getLikedRecruitList(Long memberId) {
         List<Likes> myLikes = likeRepository.findByMemberId(memberId);
 
         return myLikes.stream()

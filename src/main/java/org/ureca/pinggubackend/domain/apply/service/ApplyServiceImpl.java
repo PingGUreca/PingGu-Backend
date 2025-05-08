@@ -20,7 +20,7 @@ public class ApplyServiceImpl implements ApplyService{
     private final ApplyRepository applyRepository;
 
     @Override
-    public List<MyApplyResponse> getApplyListByMemberId(Long memberId) {
+    public List<MyApplyResponse> getMyApplies(Long memberId) {
 
         List<Apply> applies = applyRepository.findByMemberId(memberId);
 
