@@ -1,5 +1,6 @@
 package org.ureca.pinggubackend.domain.recruit.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
@@ -12,21 +13,30 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class RecruitPostDto {
 
+    @NotNull
     private Long clubId;
 
+    @NotNull
     private LocalDate date;
 
+    @NotNull
     private Integer capacity;
 
+    @NotNull
     private Gender gender;
 
+    @NotNull
     private Level level;
 
+    @NotNull
     private Racket racket;
 
+    @NotNull
+    private String chatUrl;
+
+    @NotNull
     private String title;
 
+    @NotNull
     private String document;
-
-    private String chatUrl;
 }
