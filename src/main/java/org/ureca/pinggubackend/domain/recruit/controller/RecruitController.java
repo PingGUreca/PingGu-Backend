@@ -40,7 +40,7 @@ public class RecruitController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Void> postRecruit(@RequestBody RecruitPostDto recruitPostDto) {
+    public ResponseEntity<Void> postRecruit(@RequestBody @Valid RecruitPostDto recruitPostDto) {
         // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
         Long recruitId = recruitService.postRecruit(recruitPostDto);
         URI uri = URI.create("/recruit/" + recruitId);

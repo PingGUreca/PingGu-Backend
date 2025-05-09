@@ -1,5 +1,6 @@
 package org.ureca.pinggubackend.domain.recruit.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,12 +29,13 @@ public class RecruitPutDto {
     @NotNull
     private Racket racket;
 
-    @NotNull
+    @NotEmpty
+    private String chatUrl;
+
+    @NotEmpty
     private String title;
 
     @NotNull
     private String document;
 
-    @NotNull
-    private String chatUrl;
 }
