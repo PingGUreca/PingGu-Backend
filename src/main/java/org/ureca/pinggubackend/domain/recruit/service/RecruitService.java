@@ -8,6 +8,7 @@ import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
+import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 
 import java.time.LocalDate;
@@ -21,4 +22,7 @@ public interface RecruitService {
     void putRecruit(Long recruitId, RecruitPutDto recruitPutDto);
     void deleteRecruit(Long recruitId);
     Page<RecruitPreviewListResponse> getRecruitPreviewList(LocalDate date, String gu, Level level, Gender gender, Pageable pageable);
+    boolean toggleLike(Long memberId, Long recruitId);
+    ApplyResponse proceedApply(Long memberId, Long recruitId);
+    ApplyResponse cancelApply(Long memberId, Long recruitId);
 }

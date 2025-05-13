@@ -12,6 +12,7 @@ import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
+import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 
@@ -65,5 +66,26 @@ public class RecruitController {
         // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
         recruitService.deleteRecruit(recruitId);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{recruitId}/like")
+    public ResponseEntity<Boolean> toggleLike(@PathVariable Long recruitId, @RequestParam Long memberId) {
+        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
+        boolean isLiked = recruitService.toggleLike(memberId, recruitId);
+        return ResponseEntity.ok(isLiked);
+    }
+
+    @PostMapping("/{recruitId}/apply")
+    public ResponseEntity<ApplyResponse> proceedApply(@PathVariable Long recruitId, @RequestParam Long memberId) {
+        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
+        return ResponseEntity.ok(recruitService.proceedApply(memberId, recruitId));
+    }
+
+    @DeleteMapping("/{recruitId}/apply")
+    public ResponseEntity<ApplyResponse> cancelApply(@PathVariable Long recruitId,
+                                               @RequestParam Long memberId
+    ) {
+        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
+        return ResponseEntity.ok(recruitService.cancelApply(memberId, recruitId));
     }
 }

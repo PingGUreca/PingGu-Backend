@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/mypage")
 public class MyPageController {
-  
+
     private final MyPageService myPageService;
 
     @GetMapping
@@ -30,7 +30,7 @@ public class MyPageController {
     ){
         return ResponseEntity.ok(myPageService.editProfile(memberId,request));
     }
-  
+
     @DeleteMapping
     public ResponseEntity<MyPageDeleteResponse> deleteMember(
             @RequestParam long memberId // TODO - JWT 구현 이후 변경 예정
