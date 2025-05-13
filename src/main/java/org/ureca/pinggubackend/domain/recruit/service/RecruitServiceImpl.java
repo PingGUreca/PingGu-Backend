@@ -3,7 +3,9 @@ package org.ureca.pinggubackend.domain.recruit.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.ureca.pinggubackend.domain.apply.service.ApplyService;
 import org.ureca.pinggubackend.domain.likes.service.LikeService;
 import org.ureca.pinggubackend.domain.location.entity.Club;
@@ -19,11 +21,13 @@ import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
+import org.ureca.pinggubackend.domain.recruit.enums.RecruitStatus;
 import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepository;
 import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepositoryCustom;
 import org.ureca.pinggubackend.global.exception.recruit.RecruitException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -83,7 +87,7 @@ public class RecruitServiceImpl implements RecruitService {
             throw RecruitException.of(FORBIDDEN_RECRUIT_ACCESS);
         }
 
-        recruitRepository.deleteById(recruitId);
+        recruit.closeRecruit();
     }
 
     @Override
@@ -114,6 +118,56 @@ public class RecruitServiceImpl implements RecruitService {
         return new ApplyResponse(memberId, recruitId);
     }
 
+    @Override
+    public List<MyRecruitResponse> getRecruitListByMemberId(Long memberId) {
+        List<Recruit> recruits = recruitRepository.findByMemberId(memberId);
+
+        return recruits.stream()
+                .map(recruit -> MyRecruitResponse.from(recruit))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 매일 자정에 실행되는 스케줄 메소드
+     * 경기 날짜가 지난 모집 글들의 상태를 EXPIRED로 변경
+     */
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
+    @Transactional
+    public void expireOutdatedRecruits() {
+        LocalDate today = LocalDate.now();
+
+        // 상태가 OPEN, FULL 이면서 date가 오늘보다 이전인 모집글들 조회
+        List<Recruit> outdatedRecruits = recruitRepository.findByStatusInAndDateBefore(
+                List.of(RecruitStatus.OPEN, RecruitStatus.FULL), today);
+
+        // 모든 만료된 모집글의 상태 변경
+        for (Recruit recruit : outdatedRecruits) {
+            recruit.expireRecruit();
+        }
+
+        // 변경사항 저장 (JPA dirty checking으로 자동 반영될 수도 있음)
+        recruitRepository.saveAll(outdatedRecruits);
+    }
+
+    /**
+     * 매일 자정에 실행되는 스케줄 메소드
+     * 30일 이상 소프트 딜리트된(status가 false이고 deleteDate가 30일 이상 지난) 모집글들을 영구 삭제
+     */
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행
+    @Transactional
+    public void deleteOldRecruits() {
+        // 30일 전 날짜 계산
+        LocalDate thirtyDaysAgo = LocalDate.from(LocalDateTime.now().minusDays(30));
+
+        // status가 EXPIRED, CLOSED 이고 deleteDate가 30일 이상 지난 모집글들 조회
+        List<Recruit> oldDeletedRecruits = recruitRepository.findByStatusInAndDeleteDateBefore(
+                List.of(RecruitStatus.EXPIRED, RecruitStatus.CLOSED),
+                thirtyDaysAgo);
+
+        // 영구 삭제
+        recruitRepository.deleteAll(oldDeletedRecruits);
+    }
+
     private Recruit mapToRecruit(Member member, RecruitPostDto recruitPostDto) {
         Club club = clubRepository.findById(recruitPostDto.getClubId())
                 .orElseThrow(() -> RecruitException.of(INVALID_CLUB));
@@ -130,7 +184,7 @@ public class RecruitServiceImpl implements RecruitService {
                 .capacity(recruitPostDto.getCapacity())
                 .gender(recruitPostDto.getGender())
                 .club(club)
-                .status(false)
+                .status(RecruitStatus.OPEN)
                 .build();
 
         return recruit;
@@ -157,14 +211,5 @@ public class RecruitServiceImpl implements RecruitService {
                 .build();
 
         return recruitGetDto;
-    }
-
-    @Override
-    public List<MyRecruitResponse> getRecruitListByMemberId(Long memberId) {
-        List<Recruit> recruits = recruitRepository.findByMemberId(memberId);
-
-        return recruits.stream()
-                .map(recruit -> MyRecruitResponse.from(recruit))
-                .collect(Collectors.toList());
     }
 }

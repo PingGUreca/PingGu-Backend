@@ -1,12 +1,9 @@
 package org.ureca.pinggubackend.domain.recruit.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter

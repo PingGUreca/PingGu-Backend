@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.member.enums.Racket;
+import org.ureca.pinggubackend.domain.recruit.enums.RecruitStatus;
 
 import java.time.LocalDate;
 
@@ -36,5 +37,5 @@ public class RecruitGetDto {
 
     private String chatUrl;
 
-    private Boolean status;
+    private RecruitStatus status;
 }
