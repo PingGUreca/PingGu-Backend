@@ -23,7 +23,13 @@ public class RecruitRepositoryCustomImpl implements RecruitRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<RecruitPreviewListResponse> getRecruitPreviewList(LocalDate date, String gu, Level level, Gender gender, Pageable pageable) {
+    public Page<RecruitPreviewListResponse> getRecruitPreviewList(
+            LocalDate date,
+            String gu,
+            Level level,
+            Gender gender,
+            Pageable pageable
+    ) {
         QRecruit recruit = QRecruit.recruit;
         QClub club = QClub.club;
 
@@ -36,27 +42,29 @@ public class RecruitRepositoryCustomImpl implements RecruitRepositoryCustom {
         List<RecruitPreviewListResponse> content = queryFactory
                 .select(Projections.constructor(
                         RecruitPreviewListResponse.class,
+                        recruit.id,
                         club.name,
                         recruit.date,
                         recruit.title,
                         recruit.capacity,
-                        recruit.current
+                        recruit.current,
+                        recruit.status
                 ))
                 .from(recruit)
                 .join(recruit.club, club)
                 .where(builder)
+                .orderBy(recruit.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long count = queryFactory
+        long total = queryFactory
                 .select(recruit.count())
                 .from(recruit)
                 .join(recruit.club, club)
                 .where(builder)
                 .fetchOne();
 
-        return new PageImpl<>(content, pageable, count);
+        return new PageImpl<>(content, pageable, total);
     }
-
 }
