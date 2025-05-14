@@ -18,9 +18,9 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.ureca.pinggubackend.domain.auth.jwt.JwtFilter;
+import org.ureca.pinggubackend.domain.auth.jwt.JwtUtil;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
-import org.ureca.pinggubackend.global.auth.jwt.JwtFilter;
-import org.ureca.pinggubackend.global.auth.jwt.JwtUtil;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MemberRepository memberRepository) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors-> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**")
