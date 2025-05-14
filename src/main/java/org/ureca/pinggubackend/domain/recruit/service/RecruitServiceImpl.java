@@ -98,7 +98,7 @@ public class RecruitServiceImpl implements RecruitService {
             Gender gender,
             Pageable pageable
     ) {
-        return recruitRepositoryCustom.getRecruitPreviewList(date, gu, level, gender,pageable);
+        return recruitRepositoryCustom.getRecruitPreviewList(date, gu, level, gender, pageable);
     }
 
     @Override
