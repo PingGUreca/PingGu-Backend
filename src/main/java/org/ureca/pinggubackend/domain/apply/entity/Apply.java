@@ -4,14 +4,17 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.ureca.pinggubackend.global.entity.BaseEntity;
 import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
+import org.ureca.pinggubackend.global.entity.BaseEntity;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "apply", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"member_id", "recruit_id"})
+})
 public class Apply extends BaseEntity {
 
     @ManyToOne

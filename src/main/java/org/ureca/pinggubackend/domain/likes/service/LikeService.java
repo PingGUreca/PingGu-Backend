@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface LikeService {
     List<MyLikeResponse> getLikedRecruitList(Long memberId);
+    boolean toggleLike(Long memberId, Long recruitId);
 }

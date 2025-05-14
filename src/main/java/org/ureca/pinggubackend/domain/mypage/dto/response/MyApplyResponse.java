@@ -2,7 +2,6 @@ package org.ureca.pinggubackend.domain.mypage.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 
 import java.time.format.DateTimeFormatter;
@@ -26,7 +25,7 @@ public class MyApplyResponse {
                 List.of(recruit.getClub().getName(), recruit.getClub().getAddress()),
                 recruit.getDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")),
                 recruit.getChatUrl(),
-                recruit.getStatus() ? "모집 진행중" : "모집 종료"
+                recruit.getStatus().toString()
         );
     }
 }
