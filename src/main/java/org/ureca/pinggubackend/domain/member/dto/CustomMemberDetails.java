@@ -10,17 +10,19 @@ import java.util.List;
 public class CustomMemberDetails implements UserDetails {
 
     private final Member member;
-    private final String email;
     private final List<GrantedAuthority> authorities;
 
     public CustomMemberDetails(Member member) {
         this.member = member;
-        this.email = member.getEmail();
-        this.authorities = List.of();
+        this.authorities = List.of(); // 권한이 없다면 비워도 OK
     }
 
     public Long getId() {
         return member.getId();
+    }
+
+    public Member getMember() {
+        return this.member;
     }
 
     @Override
@@ -30,26 +32,32 @@ public class CustomMemberDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return ""; // 소셜 로그인은 비밀번호 없음
     }
 
     @Override
     public String getUsername() {
-        return email;
+        // memberId를 문자열로 반환
+        return String.valueOf(member.getId());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

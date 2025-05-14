@@ -16,12 +16,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements  MemberService{
+public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
     @Transactional
-    public void deleteMember(long memberId){
+    public void deleteMember(long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> BaseException.of(CommonErrorCode.USER_NOT_FOUND));
 
@@ -32,20 +32,22 @@ public class MemberServiceImpl implements  MemberService{
     public void updateBasicInfo(long memberId, String name, Gender gender, MainHand mainHand,
                                 Racket racket, String gu, Level level) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> BaseException.of(CommonErrorCode.USER_NOT_FOUND));
 
         member.updateProfile(name, gender, gu, level, mainHand, racket);
+
+        memberRepository.save(member);
     }
 
     @Override
-    public Member findById(long memberId){
+    public Member findById(long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
     }
 
     @Override
-    public Optional<Member> findByEmail(String email) {
-        Optional<Member> member = memberRepository.findByEmail(email);
+    public Optional<Member> findByKakaoId(long kakaoId) {
+        Optional<Member> member = memberRepository.findByKakaoId(kakaoId);
         return member;
     }
 }

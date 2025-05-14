@@ -12,8 +12,9 @@ public interface MemberService {
     void deleteMember(long memberId);
 
     void updateBasicInfo(long memberId, String name, Gender gender, MainHand mainHand,
-                      Racket racket, String gu, Level level);
+                         Racket racket, String gu, Level level);
 
     Member findById(long memberId);
-    Optional<Member> findByEmail(String email);
+
+    Optional<Member> findByKakaoId(long kakaoId);
 }
