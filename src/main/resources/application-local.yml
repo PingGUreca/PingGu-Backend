@@ -4,3 +4,9 @@ spring:
     url: jdbc:postgresql://localhost:6790/pinggu-database
     username: urecauser
     password: urecapassword
+  kakao:
+    auth:
+      client-id: ${KAKAO_CLIENT_ID}
+      redirect-uri: ${KAKAO_REDIRECT_URL}
+  jwt:
+    secret: ${JWT_SECRET_CODE}
