@@ -26,4 +26,6 @@ public interface RecruitRepository extends JpaRepository<Recruit, Long> {
     List<Recruit> findByStatusInAndDeleteDateBefore(List<RecruitStatus> status, LocalDate thirtyDaysAgo);
 
     Integer countByStatus(RecruitStatus recruitStatus);
+
+    List<Recruit> findByMemberIdAndDeleteDateIsNull(Long memberId);
 }

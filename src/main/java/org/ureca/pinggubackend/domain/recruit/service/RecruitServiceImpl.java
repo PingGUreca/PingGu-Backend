@@ -120,7 +120,7 @@ public class RecruitServiceImpl implements RecruitService {
 
     @Override
     public List<MyRecruitResponse> getRecruitListByMemberId(Long memberId) {
-        List<Recruit> recruits = recruitRepository.findByMemberId(memberId);
+        List<Recruit> recruits = recruitRepository.findByMemberIdAndDeleteDateIsNull(memberId);
 
         return recruits.stream()
                 .map(recruit -> MyRecruitResponse.from(recruit))
