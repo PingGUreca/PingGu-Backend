@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/recruit/**", "/location/", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**")
+                        .requestMatchers("/auth/**", "/recruit/**", "/location/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(jwtUtil, memberRepository), LogoutFilter.class)
