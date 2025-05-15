@@ -12,7 +12,6 @@ import org.ureca.pinggubackend.domain.likes.service.LikeService;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.location.repository.ClubRepository;
 import org.ureca.pinggubackend.domain.member.entity.Member;
-import org.ureca.pinggubackend.domain.member.entity.QMember;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
