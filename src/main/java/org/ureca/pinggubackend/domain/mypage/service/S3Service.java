@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
@@ -39,5 +40,37 @@ public class S3Service {
 
             return "https://%s.s3.us-east-1.amazonaws.com/%s".formatted(bucketName, fileName);
         }
+    }
+
+    public String upload(MultipartFile file) throws IOException {
+        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .contentType(file.getContentType())
+                .build();
+
+        s3Client.putObject(request, RequestBody.fromBytes(file.getBytes()));
+
+        return "https://%s.s3.us-east-1.amazonaws.com/%s".formatted(bucketName, fileName);
+    }
+
+    public void deleteImageByUrl(String imageUrl) {
+        String key = extractKeyFromUrl(imageUrl);
+
+        DeleteObjectRequest request = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        s3Client.deleteObject(request);
+    }
+
+    private String extractKeyFromUrl(String imageUrl) {
+        String prefix = "https://" + bucketName + ".s3.us-east-1.amazonaws.com/";
+        if (!imageUrl.startsWith(prefix)) {
+            throw new IllegalArgumentException("해당 URL은 이 버킷에서 온 것이 아닙니다.");
+        }
+        return imageUrl.substring(prefix.length());
     }
 }

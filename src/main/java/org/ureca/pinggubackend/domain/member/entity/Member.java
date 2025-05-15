@@ -85,4 +85,8 @@ public class Member extends BaseEntity {
         this.mainHand = mainHand;
         this.racket = racket;
     }
+
+    public void updateProfileImg(String url) {
+        this.profileImgUrl = url;
+    }
 }

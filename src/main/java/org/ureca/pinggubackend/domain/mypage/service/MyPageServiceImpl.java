@@ -3,6 +3,7 @@ package org.ureca.pinggubackend.domain.mypage.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.ureca.pinggubackend.domain.apply.service.ApplyService;
 import org.ureca.pinggubackend.domain.likes.service.LikeService;
 import org.ureca.pinggubackend.domain.member.entity.Member;
@@ -12,6 +13,7 @@ import org.ureca.pinggubackend.domain.mypage.dto.request.MyPageUpdateRequest;
 import org.ureca.pinggubackend.domain.mypage.dto.response.*;
 import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,6 +25,7 @@ public class MyPageServiceImpl implements MyPageService {
     private final ApplyService applyService;
     private final LikeService likeService;
     private final MemberService memberService;
+    private final S3Service s3Service;
 
     @Override
     public MyPageResponse getMyPage(Member member) {
@@ -68,5 +71,14 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public List<MyRecruitResponse> getMyRecruits(Long memberId) {
         return recruitService.getRecruitListByMemberId(memberId);
+    }
+
+    @Override
+    public String changeProfileImg(Member member, MultipartFile file) throws IOException {
+        String url = s3Service.upload(file);
+        s3Service.deleteImageByUrl(member.getProfileImgUrl()); // 기존 프로필 이미지 삭제
+        member.updateProfileImg(url);
+        memberRepository.save(member);
+        return url;
     }
 }
