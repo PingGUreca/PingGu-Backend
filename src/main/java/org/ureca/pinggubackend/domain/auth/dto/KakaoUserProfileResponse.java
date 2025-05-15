@@ -1,11 +1,9 @@
-package org.ureca.pinggubackend.global.auth.dto;
+package org.ureca.pinggubackend.domain.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class KakaoUserProfileResponse {
 
     private Long id;
@@ -14,7 +12,6 @@ public class KakaoUserProfileResponse {
     private KakaoAccount kakaoAccount;
 
     @Getter
-    @Setter
     public static class KakaoAccount {
         private Profile profile;
         private String email;
@@ -27,7 +24,6 @@ public class KakaoUserProfileResponse {
     }
 
     @Getter
-    @Setter
     public static class Profile {
         private String nickname;
 

@@ -1,4 +1,4 @@
-package org.ureca.pinggubackend.global.auth.dto;
+package org.ureca.pinggubackend.domain.auth.dto;
 
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
@@ -13,4 +13,5 @@ public record SignupRequest(
         Racket racket,
         String gu,
         Level level
-) { }
+) {
+}

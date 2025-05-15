@@ -1,12 +1,18 @@
 package org.ureca.pinggubackend.domain.member.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.ureca.pinggubackend.domain.member.enums.*;
-import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
-import org.ureca.pinggubackend.global.entity.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.ureca.pinggubackend.domain.apply.entity.Apply;
 import org.ureca.pinggubackend.domain.likes.entity.Likes;
+import org.ureca.pinggubackend.domain.member.enums.Gender;
+import org.ureca.pinggubackend.domain.member.enums.Level;
+import org.ureca.pinggubackend.domain.member.enums.MainHand;
+import org.ureca.pinggubackend.domain.member.enums.Racket;
+import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
+import org.ureca.pinggubackend.global.entity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +22,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -27,6 +32,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recruit> recruitList = new ArrayList<>();
+
+    @Column(unique = true, nullable = false)
+    private Long kakaoId;
 
     @Column(unique = true, nullable = false)
     private String email;

@@ -1,7 +1,10 @@
-package org.ureca.pinggubackend.global.auth.entity;
+package org.ureca.pinggubackend.domain.auth.entity;
 
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.ureca.pinggubackend.global.entity.BaseEntity;
 
 @Entity
@@ -10,12 +13,11 @@ import org.ureca.pinggubackend.global.entity.BaseEntity;
 @AllArgsConstructor
 public class RefreshToken extends BaseEntity {
 
-    private String email;
+    private Long memberId;
 
     private String token;
 
     public void updateToken(String newToken) {
         this.token = newToken;
     }
-
 }
