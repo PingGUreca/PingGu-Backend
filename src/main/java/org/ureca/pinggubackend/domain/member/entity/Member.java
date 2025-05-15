@@ -51,6 +51,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String gu;
 
+//    @Column(nullable = false)
+    private String profileImgUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
@@ -81,5 +84,9 @@ public class Member extends BaseEntity {
         this.level = level;
         this.mainHand = mainHand;
         this.racket = racket;
+    }
+
+    public void updateProfileImg(String url) {
+        this.profileImgUrl = url;
     }
 }

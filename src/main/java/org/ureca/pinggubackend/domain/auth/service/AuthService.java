@@ -15,9 +15,11 @@ import org.ureca.pinggubackend.domain.member.enums.MainHand;
 import org.ureca.pinggubackend.domain.member.enums.Racket;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
 import org.ureca.pinggubackend.domain.member.service.MemberService;
+import org.ureca.pinggubackend.domain.mypage.service.S3Service;
 import org.ureca.pinggubackend.global.exception.BaseException;
 import org.ureca.pinggubackend.global.exception.common.CommonErrorCode;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -29,6 +31,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final KakaoProfileApi kakaoProfileApi;
     private final KakaoTokenApi kakaoTokenApi;
+    private final S3Service s3Service;
 
     private String getKakaoAccessToken(String code) {
         return kakaoTokenApi.requestAccessToken(code);
@@ -47,7 +50,7 @@ public class AuthService {
                 );
     }
 
-    public KakaoLoginResponse loginOrRegister(String code) {
+    public KakaoLoginResponse loginOrRegister(String code) throws IOException {
         KakaoUserProfileResponse kakaoUserProfile = getUserProfileFromKakao(code);
 
         Long kakaoId = kakaoUserProfile.getId();
@@ -71,6 +74,9 @@ public class AuthService {
             String tmpName = kakaoUserProfile.getKakaoAccount().getProfile().getNickname();
             String tmpEmail = kakaoUserProfile.getKakaoAccount().getEmail();
 
+            String profileImgUrl = kakaoUserProfile.getKakaoAccount().getProfile().getProfileImageUrl();
+            String s3Url = s3Service.uploadImageFromUrl(profileImgUrl);
+
             Member newMember = Member.builder()
                     .kakaoId(kakaoId)
                     .email(tmpEmail)
@@ -81,6 +87,7 @@ public class AuthService {
                     .level(Level.BEGINNER)
                     .mainHand(MainHand.L)
                     .racket(Racket.PEN_HOLDER)
+                    .profileImgUrl(s3Url)
                     .build();
 
             Long tmpMemberId = memberRepository.save(newMember).getId();

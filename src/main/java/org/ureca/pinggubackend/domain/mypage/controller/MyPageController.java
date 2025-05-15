@@ -1,14 +1,17 @@
 package org.ureca.pinggubackend.domain.mypage.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.ureca.pinggubackend.domain.member.dto.CustomMemberDetails;
 import org.ureca.pinggubackend.domain.mypage.dto.request.MyPageUpdateRequest;
 import org.ureca.pinggubackend.domain.mypage.dto.response.*;
 import org.ureca.pinggubackend.domain.mypage.service.MyPageService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -31,6 +34,14 @@ public class MyPageController {
             @RequestBody MyPageUpdateRequest request
     ){
         return ResponseEntity.ok(myPageService.editProfile(principal.getMember(), request));
+    }
+
+    @PostMapping(value = "/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> changeProfileImg(
+            @AuthenticationPrincipal CustomMemberDetails principal,
+            @RequestParam MultipartFile file
+    ) throws IOException {
+        return ResponseEntity.ok(myPageService.changeProfileImg(principal.getMember(), file));
     }
 
     @DeleteMapping
