@@ -12,6 +12,7 @@ public class MyPageResponse {
     private final String level;
     private final String mainHand;
     private final String racket;
+    private final String profileImgUrl;
 
     public static MyPageResponse from(Member member) {
         return new MyPageResponse(
@@ -20,7 +21,8 @@ public class MyPageResponse {
                 member.getGu(),
                 member.getLevel().toString(),
                 member.getMainHand().toString(),
-                member.getRacket().toString()
+                member.getRacket().toString(),
+                member.getProfileImgUrl()
         );
     }
 }
