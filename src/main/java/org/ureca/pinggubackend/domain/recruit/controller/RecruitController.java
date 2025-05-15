@@ -7,7 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.ureca.pinggubackend.domain.member.dto.CustomMemberDetails;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
@@ -42,9 +44,9 @@ public class RecruitController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Void> postRecruit(@RequestBody @Valid RecruitPostDto recruitPostDto) {
-        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
-        Long recruitId = recruitService.postRecruit(recruitPostDto);
+    public ResponseEntity<Void> postRecruit(@AuthenticationPrincipal CustomMemberDetails principal,
+                                            @RequestBody @Valid RecruitPostDto recruitPostDto) {
+        Long recruitId = recruitService.postRecruit(principal.getMember(), recruitPostDto);
         URI uri = URI.create("/recruit/" + recruitId);
         return ResponseEntity.created(uri).build();
     }
@@ -56,37 +58,35 @@ public class RecruitController {
     }
 
     @PutMapping("/{recruitId}")
-    public ResponseEntity<Void> putRecruit(@PathVariable Long recruitId, @RequestBody @Valid RecruitPutDto recruitPutDto) {
-        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
-        recruitService.putRecruit(recruitId, recruitPutDto);
+    public ResponseEntity<Void> putRecruit(@PathVariable Long recruitId,
+                                           @AuthenticationPrincipal CustomMemberDetails principal,
+                                           @RequestBody @Valid RecruitPutDto recruitPutDto) {
+        recruitService.putRecruit(principal.getMember().getId(), recruitId, recruitPutDto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{recruitId}")
-    public ResponseEntity<Void> deleteMapping(@PathVariable Long recruitId) {
-        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
-        recruitService.deleteRecruit(recruitId);
+    public ResponseEntity<Void> deleteMapping(@AuthenticationPrincipal CustomMemberDetails principal,
+                                              @PathVariable Long recruitId) {
+        recruitService.deleteRecruit(principal.getMember().getId(), recruitId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{recruitId}/like")
-    public ResponseEntity<Boolean> toggleLike(@PathVariable Long recruitId, @RequestParam Long memberId) {
-        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
-        boolean isLiked = recruitService.toggleLike(memberId, recruitId);
+    public ResponseEntity<Boolean> toggleLike(@AuthenticationPrincipal CustomMemberDetails principal, @PathVariable Long recruitId) {
+        boolean isLiked = recruitService.toggleLike(principal.getMember(), recruitId);
         return ResponseEntity.ok(isLiked);
     }
 
     @PostMapping("/{recruitId}/apply")
-    public ResponseEntity<ApplyResponse> proceedApply(@PathVariable Long recruitId, @RequestParam Long memberId) {
-        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
-        return ResponseEntity.ok(recruitService.proceedApply(memberId, recruitId));
+    public ResponseEntity<ApplyResponse> proceedApply(@AuthenticationPrincipal CustomMemberDetails principal, @PathVariable Long recruitId) {
+        return ResponseEntity.ok(recruitService.proceedApply(principal.getMember(), recruitId));
     }
 
     @DeleteMapping("/{recruitId}/apply")
-    public ResponseEntity<ApplyResponse> cancelApply(@PathVariable Long recruitId,
-                                               @RequestParam Long memberId
+    public ResponseEntity<ApplyResponse> cancelApply(@AuthenticationPrincipal CustomMemberDetails principal,
+                                                     @PathVariable Long recruitId
     ) {
-        // ToDo: 로그인 개발 완료 되면 유저 정보 가져오기
-        return ResponseEntity.ok(recruitService.cancelApply(memberId, recruitId));
+        return ResponseEntity.ok(recruitService.cancelApply(principal.getMember().getId(), recruitId));
     }
 }

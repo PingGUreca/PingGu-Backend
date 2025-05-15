@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
 
-        List<String> whitelist = List.of("/auth/kakao-login", "/auth/signup", "/auth/token");
+        List<String> whitelist = List.of("/auth/kakao-login", "/auth/signup", "/auth/token", "/recruit"); //TODO : /recruit 임시 허용
         if (whitelist.stream().anyMatch(uri::startsWith)) {
             filterChain.doFilter(request, response);
             return;

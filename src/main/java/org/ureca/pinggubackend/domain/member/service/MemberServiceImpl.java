@@ -21,15 +21,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void deleteMember(long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> BaseException.of(CommonErrorCode.USER_NOT_FOUND));
-
+    public void deleteMember(Member member) {
         memberRepository.delete(member);
     }
 
     @Override
-    public void updateBasicInfo(long memberId, String name, Gender gender, MainHand mainHand,
+    public void updateBasicInfo(Long memberId, String name, Gender gender, MainHand mainHand,
                                 Racket racket, String gu, Level level) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> BaseException.of(CommonErrorCode.USER_NOT_FOUND));

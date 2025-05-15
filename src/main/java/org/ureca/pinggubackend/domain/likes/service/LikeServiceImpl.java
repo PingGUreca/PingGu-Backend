@@ -10,14 +10,12 @@ import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyLikeResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.domain.recruit.repository.RecruitRepository;
-import org.ureca.pinggubackend.global.exception.BaseException;
 import org.ureca.pinggubackend.global.exception.recruit.RecruitException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.ureca.pinggubackend.global.exception.common.CommonErrorCode.USER_NOT_FOUND;
 import static org.ureca.pinggubackend.global.exception.recruit.RecruitErrorCode.RECRUIT_NOT_FOUND;
 
 @Service
@@ -39,15 +37,14 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     @Transactional
-    public boolean toggleLike(Long recruitId, Long memberId) {
+    public boolean toggleLike(Member member, Long recruitId) {
         // 기존 좋아요 확인
-        Optional<Likes> existingLike = likeRepository.findByMemberIdAndRecruitId(memberId, recruitId);
+        Optional<Likes> existingLike = likeRepository.findByMemberIdAndRecruitId(member.getId(), recruitId);
 
         if (existingLike.isPresent()) {
             likeRepository.delete(existingLike.get());
             return false;
         } else {
-            Member member = memberRepository.findById(memberId).orElseThrow(() -> BaseException.of(USER_NOT_FOUND));
             Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
 
             Likes like = new Likes(member, recruit);

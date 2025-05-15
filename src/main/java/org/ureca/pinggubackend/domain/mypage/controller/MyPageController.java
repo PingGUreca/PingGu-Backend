@@ -2,7 +2,9 @@ package org.ureca.pinggubackend.domain.mypage.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.ureca.pinggubackend.domain.member.dto.CustomMemberDetails;
 import org.ureca.pinggubackend.domain.mypage.dto.request.MyPageUpdateRequest;
 import org.ureca.pinggubackend.domain.mypage.dto.response.*;
 import org.ureca.pinggubackend.domain.mypage.service.MyPageService;
@@ -18,49 +20,49 @@ public class MyPageController {
 
     @GetMapping
     public ResponseEntity<MyPageResponse> getMyPage(
-            @RequestParam long memberId // TODO - JWT 구현 이후 변경 예정
-    ){
-        return ResponseEntity.ok(myPageService.getMyPage(memberId));
+            @AuthenticationPrincipal CustomMemberDetails member
+            ){
+        return ResponseEntity.ok(myPageService.getMyPage(member.getMember()));
     }
 
     @PutMapping("/profile")
     public ResponseEntity<MyPageUpdateResponse> editProfile(
-            @RequestParam long memberId, // TODO - JWT 구현 이후 변경 예정
+            @AuthenticationPrincipal CustomMemberDetails principal,
             @RequestBody MyPageUpdateRequest request
     ){
-        return ResponseEntity.ok(myPageService.editProfile(memberId,request));
+        return ResponseEntity.ok(myPageService.editProfile(principal.getMember(), request));
     }
 
     @DeleteMapping
     public ResponseEntity<MyPageDeleteResponse> deleteMember(
-            @RequestParam long memberId // TODO - JWT 구현 이후 변경 예정
+            @AuthenticationPrincipal CustomMemberDetails principal
     ){
-        return ResponseEntity.ok(myPageService.deleteMember(memberId));
+        return ResponseEntity.ok(myPageService.deleteMember(principal.getMember()));
     }
 
     @GetMapping("/applies")
-    public ResponseEntity<List<MyApplyResponse>> getMyApplies(@RequestParam Long memberId) {
-        List<MyApplyResponse> response = myPageService.getMyApplies(memberId);
+    public ResponseEntity<List<MyApplyResponse>> getMyApplies(@AuthenticationPrincipal CustomMemberDetails principal) {
+        List<MyApplyResponse> response = myPageService.getMyApplies(principal.getMember().getId());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/likes")
-    public ResponseEntity<List<MyLikeResponse>> getMyLikes(@RequestParam Long memberId) {
-        List<MyLikeResponse> response = myPageService.getMyLikes(memberId);
+    public ResponseEntity<List<MyLikeResponse>> getMyLikes(@AuthenticationPrincipal CustomMemberDetails principal) {
+        List<MyLikeResponse> response = myPageService.getMyLikes(principal.getMember().getId());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/recruits")
-    public ResponseEntity<List<MyRecruitResponse>> getMyRecruits(@RequestParam Long memberId) {
-        List<MyRecruitResponse> response = myPageService.getMyRecruits(memberId);
+    public ResponseEntity<List<MyRecruitResponse>> getMyRecruits(@AuthenticationPrincipal CustomMemberDetails principal) {
+        List<MyRecruitResponse> response = myPageService.getMyRecruits(principal.getMember().getId());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/applies")
     public ResponseEntity<MyPageCancelResponse> cancelApply(
-            @RequestParam long memberId, // TODO - JWT 구현 이후 변경 예정
-            @RequestParam long recruitId
+            @AuthenticationPrincipal CustomMemberDetails principal,
+            @RequestParam Long recruitId
     ){
-        return ResponseEntity.ok(myPageService.cancelApply(memberId,recruitId));
+        return ResponseEntity.ok(myPageService.cancelApply(principal.getMember().getId(), recruitId));
     }
 }
