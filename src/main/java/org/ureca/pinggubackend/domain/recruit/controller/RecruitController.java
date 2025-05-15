@@ -16,7 +16,6 @@ import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitIsAuthorDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.service.RecruitService;
 
@@ -53,16 +52,13 @@ public class RecruitController {
     }
 
     @GetMapping("/{recruitId}")
-    public ResponseEntity<RecruitGetDto> getRecruit(@PathVariable Long recruitId) {
-        RecruitGetDto recruitGetDto = recruitService.getRecruit(recruitId);
+    public ResponseEntity<RecruitGetDto> getRecruit(@AuthenticationPrincipal CustomMemberDetails principal, @PathVariable Long recruitId) {
+        if (principal == null) { // 비회원인 경우
+            RecruitGetDto recruitGetDto = recruitService.getRecruitWithNonMember(recruitId);
+            return ResponseEntity.ok(recruitGetDto);
+        }
+        RecruitGetDto recruitGetDto = recruitService.getRecruitWithMember(principal.getMember(), recruitId);
         return ResponseEntity.ok(recruitGetDto);
-    }
-
-    @GetMapping("/author/{recruitId}")
-    public ResponseEntity<RecruitIsAuthorDto> isAuthor(@AuthenticationPrincipal CustomMemberDetails principal,
-                                     @PathVariable Long recruitId) {
-        RecruitIsAuthorDto recruitIsAuthorDto = recruitService.isAuthor(principal.getMember(), recruitId);
-        return ResponseEntity.ok(recruitIsAuthorDto);
     }
 
     @PutMapping("/{recruitId}")
