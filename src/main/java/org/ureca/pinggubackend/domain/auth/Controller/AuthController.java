@@ -2,14 +2,17 @@ package org.ureca.pinggubackend.domain.auth.Controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ureca.pinggubackend.domain.auth.dto.*;
 import org.ureca.pinggubackend.domain.auth.service.AuthService;
+import org.ureca.pinggubackend.global.util.AuthResponseUtil;
 
 import java.io.IOException;
 import java.time.Duration;
+
+import static org.ureca.pinggubackend.global.util.AuthResponseUtil.buildRefreshCookie;
+
 
 @RestController
 @AllArgsConstructor
@@ -18,31 +21,43 @@ public class AuthController {
 
     private final AuthService kakaoOAuthService;
     private final AuthService authService;
-    
+
     @GetMapping("/kakao-login")
-    public ResponseEntity<KakaoLoginResponse> kakaoLogin(@RequestParam("code") String code) throws IOException {
-        return ResponseEntity.ok(kakaoOAuthService.loginOrRegister(code));
+    public ResponseEntity<KakaoRedirectResponse> kakaoLogin(@RequestParam("code") String code) {
+        KakaoLoginResponse result = kakaoOAuthService.loginOrRegister(code);
+
+        HttpHeaders headers = new HttpHeaders();
+
+        if (result.getAccessToken() != null && result.getRefreshToken() != null) {
+            headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + result.getAccessToken());
+            headers.add(HttpHeaders.SET_COOKIE,
+                    AuthResponseUtil.buildRefreshCookie(result.getRefreshToken()).toString());
+        }
+
+        KakaoRedirectResponse body = new KakaoRedirectResponse(result.getMemberId(), result.isRegister());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(body);
     }
 
+
     @GetMapping("/token")
-    public ResponseEntity<JwtReissueResponse> reissueAccessToken(@CookieValue("refresh_token") String refreshToken) {
-        return ResponseEntity.ok(authService.reissueAccessToken(refreshToken));
+    public ResponseEntity<Void> reissueAccessToken(@CookieValue("refresh_token") String refreshToken) {
+        JwtReissueResponse newTokens = authService.reissueAccessToken(refreshToken);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + newTokens.getAccessToken())
+                .header(HttpHeaders.SET_COOKIE, buildRefreshCookie(newTokens.getRefreshToken()).toString())
+                .build();
     }
 
     @PostMapping("/signup")
     public ResponseEntity<SignupResponse> signup(@RequestBody SignupRequest request) {
         SignupResponse response = authService.signup(request);
-        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", response.getRefreshToken())
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .sameSite("Strict")
-                .maxAge(Duration.ofDays(14))
-                .build();
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + response.getAccessToken())
-                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .headers(AuthResponseUtil.buildAuthHeaders(response.getAccessToken(), response.getRefreshToken()))
                 .body(response);
     }
 
@@ -50,15 +65,8 @@ public class AuthController {
     public ResponseEntity<LogoutResponse> logout(@CookieValue("refresh_token") String refreshToken) {
         LogoutResponse response = authService.logout(refreshToken);
 
-        ResponseCookie deleteCookie = ResponseCookie.from("refresh_token", "")
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(0)
-                .build();
-
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                .header("Set-Cookie", AuthResponseUtil.deleteRefreshCookie().toString())
                 .body(response);
     }
 }

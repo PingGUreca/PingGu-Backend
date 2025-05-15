@@ -70,6 +70,7 @@ public class AuthService {
                     true
             );
         } else {
+            // 신규 회원은 토큰 없이 memberId만 반환
             String tmpName = kakaoUserProfile.getKakaoAccount().getProfile().getNickname();
             String tmpEmail = kakaoUserProfile.getKakaoAccount().getEmail();
 
