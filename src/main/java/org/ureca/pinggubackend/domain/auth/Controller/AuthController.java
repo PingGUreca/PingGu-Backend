@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.ureca.pinggubackend.domain.auth.dto.*;
 import org.ureca.pinggubackend.domain.auth.service.AuthService;
 
+import java.io.IOException;
 import java.time.Duration;
 
 @RestController
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
     
     @GetMapping("/kakao-login")
-    public ResponseEntity<KakaoLoginResponse> kakaoLogin(@RequestParam("code") String code) {
+    public ResponseEntity<KakaoLoginResponse> kakaoLogin(@RequestParam("code") String code) throws IOException {
         return ResponseEntity.ok(kakaoOAuthService.loginOrRegister(code));
     }
 

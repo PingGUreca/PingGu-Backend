@@ -10,3 +10,15 @@ spring:
       redirect-uri: ${KAKAO_REDIRECT_URL}
   jwt:
     secret: ${JWT_SECRET_CODE}
+
+cloud:
+  aws:
+    s3:
+      bucket: pinggu-s3
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: us-east-1
+    stack:
+      auto: false

@@ -16,5 +16,10 @@
     <changeSet id="1747234861210-3" author="djlim00">
         <addUniqueConstraint columnNames="kakao_id" constraintName="uc_member_kakaoid" tableName="member"/>
     </changeSet>
+    <changeSet id="1747286430103-1" author="locke">
+        <addColumn tableName="member">
+            <column name="profile_img_url" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
