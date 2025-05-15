@@ -12,6 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.ureca.pinggubackend.domain.member.dto.CustomMemberDetails;
 import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.domain.member.repository.MemberRepository;
+import org.ureca.pinggubackend.global.exception.BaseException;
+import org.ureca.pinggubackend.global.exception.common.CommonErrorCode;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 response.setHeader("Authorization", "Bearer " + newAccessToken);
 
                 Member member = memberRepository.findById(memberId)
-                        .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+                        .orElseThrow(() -> BaseException.of(CommonErrorCode.USER_NOT_FOUND));
                 CustomMemberDetails userDetails = new CustomMemberDetails(member);
                 Authentication authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
