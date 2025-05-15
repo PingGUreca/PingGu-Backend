@@ -10,6 +10,7 @@ import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
+import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitIsAuthorDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 
 import java.time.LocalDate;
@@ -26,4 +27,5 @@ public interface RecruitService {
     boolean toggleLike(Member member, Long recruitId);
     ApplyResponse proceedApply(Member member, Long recruitId);
     ApplyResponse cancelApply(Long memberId, Long recruitId);
+    RecruitIsAuthorDto isAuthor(Member member, Long recruitId);
 }

@@ -19,6 +19,7 @@ import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
+import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitIsAuthorDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.domain.recruit.enums.RecruitStatus;
@@ -57,6 +58,12 @@ public class RecruitServiceImpl implements RecruitService {
         Recruit recruit = recruitRepository.findById(recruitId)
                 .orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
         return mapToRecruitDto(recruit);
+    }
+
+    public RecruitIsAuthorDto isAuthor(Member member, Long recruitId) {
+        Recruit recruit = recruitRepository.findById(recruitId)
+                .orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
+        return new RecruitIsAuthorDto(Objects.equals(member.getId(), recruit.getMember().getId()));
     }
 
     public void putRecruit(Long memberId, Long recruitId, RecruitPutDto recruitPutDto) {
