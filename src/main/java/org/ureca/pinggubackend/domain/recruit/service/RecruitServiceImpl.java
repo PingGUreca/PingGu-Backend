@@ -46,9 +46,8 @@ public class RecruitServiceImpl implements RecruitService {
     private final LikeService likeService;
     private final ApplyService applyService;
 
-    public Long postRecruit(RecruitPostDto recruitPostDto) {
-        Member member = memberRepository.findById(1L).get(); // 로그인 개발전까지 임시로 사용합니다.
-
+    @Override
+    public Long postRecruit(Member member, RecruitPostDto recruitPostDto) {
         Recruit recruit = mapToRecruit(member, recruitPostDto);
         recruitRepository.save(recruit);
         return recruit.getId();
@@ -60,13 +59,11 @@ public class RecruitServiceImpl implements RecruitService {
         return mapToRecruitDto(recruit);
     }
 
-    public void putRecruit(Long recruitId, RecruitPutDto recruitPutDto) {
+    public void putRecruit(Long memberId, Long recruitId, RecruitPutDto recruitPutDto) {
         Recruit recruit = recruitRepository.findById(recruitId)
                 .orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
 
-        // 글을 작성한 유저가 아니라면 예외 발생
-        Member member = memberRepository.findById(1L).get(); // 로그인 개발전까지 임시로 사용합니다.
-        if (!Objects.equals(recruit.getMember().getId(), member.getId())) {
+        if (!Objects.equals(recruit.getMember().getId(), memberId)) {
             throw RecruitException.of(FORBIDDEN_RECRUIT_ACCESS);
         }
 
@@ -77,13 +74,11 @@ public class RecruitServiceImpl implements RecruitService {
         recruitRepository.save(recruit);
     }
 
-    public void deleteRecruit(Long recruitId) {
+    public void deleteRecruit(Long memberId, Long recruitId) {
         Recruit recruit = recruitRepository.findById(recruitId)
                 .orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
 
-        // 글을 작성한 유저가 아니라면 예외 발생
-        Member member = memberRepository.findById(1L).get(); // 로그인 개발전까지 임시로 사용합니다.
-        if (!Objects.equals(recruit.getMember().getId(), member.getId())) {
+        if (!Objects.equals(recruit.getMember().getId(), memberId)) {
             throw RecruitException.of(FORBIDDEN_RECRUIT_ACCESS);
         }
 
@@ -102,8 +97,8 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     @Override
-    public boolean toggleLike(Long memberId, Long recruitId) {
-        return likeService.toggleLike(memberId, recruitId);
+    public boolean toggleLike(Member member, Long recruitId) {
+        return likeService.toggleLike(member, recruitId);
     }
 
     @Override
@@ -113,9 +108,9 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     @Override
-    public ApplyResponse proceedApply(Long memberId, Long recruitId) {
-        applyService.proceedApply(memberId, recruitId);
-        return new ApplyResponse(memberId, recruitId);
+    public ApplyResponse proceedApply(Member member, Long recruitId) {
+        applyService.proceedApply(member, recruitId);
+        return new ApplyResponse(member.getId(), recruitId);
     }
 
     @Override

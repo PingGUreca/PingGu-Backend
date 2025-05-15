@@ -24,12 +24,15 @@ import java.util.List;
 @Getter
 public class Member extends BaseEntity {
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likesList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Apply> applies = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recruit> recruitList = new ArrayList<>();
 

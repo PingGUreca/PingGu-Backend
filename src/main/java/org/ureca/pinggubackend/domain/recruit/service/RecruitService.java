@@ -2,6 +2,7 @@ package org.ureca.pinggubackend.domain.recruit.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.ureca.pinggubackend.domain.member.entity.Member;
 import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.mypage.dto.response.MyRecruitResponse;
@@ -16,13 +17,13 @@ import java.util.List;
 
 public interface RecruitService {
 
-    Long postRecruit(RecruitPostDto recruitPostDto);
+    Long postRecruit(Member member, RecruitPostDto recruitPostDto);
     List<MyRecruitResponse> getRecruitListByMemberId(Long memberId);
     RecruitGetDto getRecruit(Long recruitId);
-    void putRecruit(Long recruitId, RecruitPutDto recruitPutDto);
-    void deleteRecruit(Long recruitId);
+    void putRecruit(Long memberId, Long recruitId, RecruitPutDto recruitPutDto);
+    void deleteRecruit(Long memberId, Long recruitId);
     Page<RecruitPreviewListResponse> getRecruitPreviewList(LocalDate date, String gu, Level level, Gender gender, Pageable pageable);
-    boolean toggleLike(Long memberId, Long recruitId);
-    ApplyResponse proceedApply(Long memberId, Long recruitId);
+    boolean toggleLike(Member member, Long recruitId);
+    ApplyResponse proceedApply(Member member, Long recruitId);
     ApplyResponse cancelApply(Long memberId, Long recruitId);
 }

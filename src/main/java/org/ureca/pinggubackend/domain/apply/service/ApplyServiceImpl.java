@@ -16,7 +16,6 @@ import org.ureca.pinggubackend.global.exception.common.CommonErrorCode;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.ureca.pinggubackend.global.exception.common.CommonErrorCode.USER_NOT_FOUND;
 import static org.ureca.pinggubackend.global.exception.recruit.RecruitErrorCode.RECRUIT_NOT_FOUND;
 
 @Service
@@ -49,9 +48,7 @@ public class ApplyServiceImpl implements ApplyService{
 
     @Override
     @Transactional
-    public void proceedApply(Long memberId, Long recruitId) {
-        //TODO : 사용자 정보 있을 경우, memberId 수정
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> BaseException.of(USER_NOT_FOUND));
+    public void proceedApply(Member member, Long recruitId) {
         Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> BaseException.of(RECRUIT_NOT_FOUND));
 
         Apply apply = new Apply(member, recruit);
