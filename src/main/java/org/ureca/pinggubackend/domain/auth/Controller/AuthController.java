@@ -9,7 +9,6 @@ import org.ureca.pinggubackend.domain.auth.service.AuthService;
 import org.ureca.pinggubackend.global.util.AuthResponseUtil;
 
 import java.io.IOException;
-import java.time.Duration;
 
 import static org.ureca.pinggubackend.global.util.AuthResponseUtil.buildRefreshCookie;
 
@@ -23,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/kakao-login")
-    public ResponseEntity<KakaoRedirectResponse> kakaoLogin(@RequestParam("code") String code) {
+    public ResponseEntity<KakaoRedirectResponse> kakaoLogin(@RequestParam("code") String code) throws IOException {
         KakaoLoginResponse result = kakaoOAuthService.loginOrRegister(code);
 
         HttpHeaders headers = new HttpHeaders();
