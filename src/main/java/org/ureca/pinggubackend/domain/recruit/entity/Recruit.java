@@ -108,4 +108,18 @@ public class Recruit extends BaseEntity {
         this.status = RecruitStatus.FULL;
     }
 
+    public void incrementApply() {
+        this.current += 1;
+        if (this.current >= this.capacity) {
+            this.status = RecruitStatus.FULL;
+        }
+    }
+
+    public void decrementApply() {
+        this.current -= 1;
+        if (this.status == RecruitStatus.FULL && this.current < this.capacity) {
+            this.status = RecruitStatus.OPEN;
+        }
+    }
+
 }
