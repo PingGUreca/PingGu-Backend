@@ -91,6 +91,7 @@ public class RecruitServiceImpl implements RecruitService {
         }
 
         recruit.closeRecruit();
+        recruitRepository.save(recruit);
     }
 
     @Override

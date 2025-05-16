@@ -43,6 +43,7 @@ public class MyPageServiceImpl implements MyPageService {
                 request.getMainHand(),
                 request.getRacket()
         );
+        memberRepository.save(member);
         return new MyPageUpdateResponse(member.getId());
     }
 
