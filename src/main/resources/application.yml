@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local} // 환경변수 없으면 local이 기본값
+  liquibase:
+    change-log: classpath:db/liquibase/changelog-master.yaml
+    enabled: true
+
+server:
+  address: 0.0.0.0
+  port: 8080
