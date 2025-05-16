@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?sslmode=disable
-    username: postgres
-    password: XFS0OFVRukQtAbb
+    url: ${DATABASE_URL}
 
   kakao:
     auth:
