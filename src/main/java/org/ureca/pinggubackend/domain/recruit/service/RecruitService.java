@@ -10,7 +10,6 @@ import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitIsAuthorDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 
 import java.time.LocalDate;
@@ -20,12 +19,12 @@ public interface RecruitService {
 
     Long postRecruit(Member member, RecruitPostDto recruitPostDto);
     List<MyRecruitResponse> getRecruitListByMemberId(Long memberId);
-    RecruitGetDto getRecruit(Long recruitId);
+    RecruitGetDto getRecruitWithNonMember(Long recruitId);
+    RecruitGetDto getRecruitWithMember(Member member, Long recruitId);
     void putRecruit(Long memberId, Long recruitId, RecruitPutDto recruitPutDto);
     void deleteRecruit(Long memberId, Long recruitId);
     Page<RecruitPreviewListResponse> getRecruitPreviewList(LocalDate date, String gu, Level level, Gender gender, Pageable pageable);
     boolean toggleLike(Member member, Long recruitId);
     ApplyResponse proceedApply(Member member, Long recruitId);
     ApplyResponse cancelApply(Long memberId, Long recruitId);
-    RecruitIsAuthorDto isAuthor(Member member, Long recruitId);
 }

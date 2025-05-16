@@ -13,6 +13,10 @@ import java.time.LocalDate;
 @Builder
 public class RecruitGetDto {
 
+    private boolean isAuthor;
+
+    private boolean isLike;
+
     private Long userId;
 
     private String userName;

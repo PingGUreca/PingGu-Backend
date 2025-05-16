@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ureca.pinggubackend.domain.apply.service.ApplyService;
+import org.ureca.pinggubackend.domain.likes.repository.LikeRepository;
 import org.ureca.pinggubackend.domain.likes.service.LikeService;
 import org.ureca.pinggubackend.domain.location.entity.Club;
 import org.ureca.pinggubackend.domain.location.repository.ClubRepository;
@@ -19,7 +20,6 @@ import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitGetDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPostDto;
 import org.ureca.pinggubackend.domain.recruit.dto.request.RecruitPutDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.ApplyResponse;
-import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitIsAuthorDto;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.Recruit;
 import org.ureca.pinggubackend.domain.recruit.enums.RecruitStatus;
@@ -46,6 +46,7 @@ public class RecruitServiceImpl implements RecruitService {
 
     private final LikeService likeService;
     private final ApplyService applyService;
+    private final LikeRepository likeRepository;
 
     @Override
     public Long postRecruit(Member member, RecruitPostDto recruitPostDto) {
@@ -54,16 +55,16 @@ public class RecruitServiceImpl implements RecruitService {
         return recruit.getId();
     }
 
-    public RecruitGetDto getRecruit(Long recruitId) {
+    public RecruitGetDto getRecruitWithNonMember(Long recruitId) {
         Recruit recruit = recruitRepository.findById(recruitId)
                 .orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
-        return mapToRecruitDto(recruit);
+        return mapToRecruitDtoWithNonMember(recruit);
     }
 
-    public RecruitIsAuthorDto isAuthor(Member member, Long recruitId) {
+    public RecruitGetDto getRecruitWithMember(Member member, Long recruitId) {
         Recruit recruit = recruitRepository.findById(recruitId)
                 .orElseThrow(() -> RecruitException.of(RECRUIT_NOT_FOUND));
-        return new RecruitIsAuthorDto(Objects.equals(member.getId(), recruit.getMember().getId()));
+        return mapToRecruitDtoWithMember(member, recruit);
     }
 
     public void putRecruit(Long memberId, Long recruitId, RecruitPutDto recruitPutDto) {
@@ -192,11 +193,13 @@ public class RecruitServiceImpl implements RecruitService {
         return recruit;
     }
 
-    private RecruitGetDto mapToRecruitDto(Recruit recruit) {
+    private RecruitGetDto mapToRecruitDtoWithNonMember(Recruit recruit) {
         Club club = clubRepository.findById(recruit.getClub().getId())
                 .orElseThrow(() -> RecruitException.of(INVALID_CLUB));
 
-        RecruitGetDto recruitGetDto = RecruitGetDto.builder()
+        return RecruitGetDto.builder()
+                .isAuthor(false)
+                .isLike(false)
                 .userId(recruit.getMember().getId())
                 .userName(recruit.getMember().getName())
                 .clubName(club.getName())
@@ -211,7 +214,33 @@ public class RecruitServiceImpl implements RecruitService {
                 .document(recruit.getDocument())
                 .status(recruit.getStatus())
                 .build();
+    }
 
-        return recruitGetDto;
+    private RecruitGetDto mapToRecruitDtoWithMember(Member member, Recruit recruit) {
+        Club club = clubRepository.findById(recruit.getClub().getId())
+                .orElseThrow(() -> RecruitException.of(INVALID_CLUB));
+
+        Long authorId = recruit.getMember().getId();
+
+        boolean isLike = likeRepository.findByMemberIdAndRecruitId(member.getId(), recruit.getId())
+                .isPresent();
+
+        return RecruitGetDto.builder()
+                .isAuthor(Objects.equals(authorId, member.getId()))
+                .isLike(isLike)
+                .userId(recruit.getMember().getId())
+                .userName(recruit.getMember().getName())
+                .clubName(club.getName())
+                .location(club.getGu())
+                .capacity(recruit.getCapacity())
+                .level(recruit.getLevel())
+                .gender(recruit.getGender())
+                .racket(recruit.getRacket())
+                .date(recruit.getDate())
+                .chatUrl(recruit.getChatUrl())
+                .title(recruit.getTitle())
+                .document(recruit.getDocument())
+                .status(recruit.getStatus())
+                .build();
     }
 }
