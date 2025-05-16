@@ -3,7 +3,7 @@ FROM eclipse-temurin:17-jdk as builder
 WORKDIR /app
 COPY . .
 
-RUN ./gradlew build --no-daemon₩
+RUN ./gradlew build --no-daemon
 
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
