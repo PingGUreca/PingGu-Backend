@@ -17,7 +17,9 @@ public class RecruitGetDto {
 
     private boolean isLike;
 
-    private Long userId;
+    private boolean isApplied;
+
+    private Long memberId;
 
     private String userName;
 

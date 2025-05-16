@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MyPageUpdateResponse {
-    private final Long userId;
+    private final Long memberId;
 }

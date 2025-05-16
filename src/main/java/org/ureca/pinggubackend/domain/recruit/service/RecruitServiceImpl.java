@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ureca.pinggubackend.domain.apply.repository.ApplyRepository;
 import org.ureca.pinggubackend.domain.apply.service.ApplyService;
 import org.ureca.pinggubackend.domain.likes.repository.LikeRepository;
 import org.ureca.pinggubackend.domain.likes.service.LikeService;
@@ -47,6 +48,7 @@ public class RecruitServiceImpl implements RecruitService {
     private final LikeService likeService;
     private final ApplyService applyService;
     private final LikeRepository likeRepository;
+    private final ApplyRepository applyRepository;
 
     @Override
     public Long postRecruit(Member member, RecruitPostDto recruitPostDto) {
@@ -201,7 +203,7 @@ public class RecruitServiceImpl implements RecruitService {
         return RecruitGetDto.builder()
                 .isAuthor(false)
                 .isLike(false)
-                .userId(recruit.getMember().getId())
+                .memberId(recruit.getMember().getId())
                 .userName(recruit.getMember().getName())
                 .clubName(club.getName())
                 .location(club.getGu())
@@ -226,10 +228,14 @@ public class RecruitServiceImpl implements RecruitService {
         boolean isLike = likeRepository.findByMemberIdAndRecruitId(member.getId(), recruit.getId())
                 .isPresent();
 
+        boolean isApplied = applyRepository.findByMemberIdAndRecruitId(member.getId(), recruit.getId())
+                .isPresent();
+
         return RecruitGetDto.builder()
                 .isAuthor(Objects.equals(authorId, member.getId()))
                 .isLike(isLike)
-                .userId(recruit.getMember().getId())
+                .isApplied(isApplied)
+                .memberId(recruit.getMember().getId())
                 .userName(recruit.getMember().getName())
                 .clubName(club.getName())
                 .location(club.getGu())
