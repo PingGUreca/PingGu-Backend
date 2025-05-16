@@ -43,7 +43,7 @@ public class RecruitController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Void> postRecruit(@AuthenticationPrincipal CustomMemberDetails principal,
                                             @RequestBody @Valid RecruitPostDto recruitPostDto) {
         Long recruitId = recruitService.postRecruit(principal.getMember(), recruitPostDto);

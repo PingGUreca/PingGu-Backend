@@ -13,6 +13,7 @@ import org.ureca.pinggubackend.domain.member.enums.Gender;
 import org.ureca.pinggubackend.domain.member.enums.Level;
 import org.ureca.pinggubackend.domain.recruit.dto.response.RecruitPreviewListResponse;
 import org.ureca.pinggubackend.domain.recruit.entity.QRecruit;
+import org.ureca.pinggubackend.domain.recruit.enums.RecruitStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,6 +39,8 @@ public class RecruitRepositoryCustomImpl implements RecruitRepositoryCustom {
         if (gu != null) builder.and(club.gu.eq(gu));
         if (level != null) builder.and(recruit.level.eq(level));
         if (gender != null) builder.and(recruit.gender.eq(gender));
+        
+        builder.and(recruit.status.in(RecruitStatus.OPEN, RecruitStatus.FULL));
 
         List<RecruitPreviewListResponse> content = queryFactory
                 .select(Projections.constructor(
