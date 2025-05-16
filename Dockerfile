@@ -1,7 +1,12 @@
-# Java 21을 위한 베이스 이미지
+FROM eclipse-temurin:21-jdk as builder
+
+WORKDIR /app
+COPY . .
+
+RUN ./gradlew build --no-daemon
+
 FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=builder /app/build/libs/*.jar app.jar
 
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
