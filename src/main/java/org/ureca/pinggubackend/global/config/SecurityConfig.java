@@ -60,7 +60,7 @@ public class SecurityConfig {
                         "http://localhost:3000",
                         "http://localhost:8080",
                         "https://pinggu-backend.fly.dev",
-                        "https://pinggu-frontend.fly.dev/"
+                        "https://pinggu-frontend.fly.dev"
                 )
         );
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
