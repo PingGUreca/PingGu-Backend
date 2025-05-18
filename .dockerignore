@@ -1,5 +1,8 @@
-.gradle/
-build/
-.idea/
-*.iml
-*.log
+.git
+.gradle
+build/classes
+build/tmp
+.idea
+*.md
+Dockerfile
+fly.toml
