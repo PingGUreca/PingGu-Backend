@@ -26,3 +26,7 @@ cloud:
       static: us-east-1
     stack:
       auto: false
+
+server:
+  address: 0.0.0.0
+  port: 8080
