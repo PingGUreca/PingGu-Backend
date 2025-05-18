@@ -58,7 +58,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:3000",
-                        "http://localhost:8080"
+                        "http://localhost:8080",
+                        "https://pinggu-backend.fly.dev"
                 )
         );
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
