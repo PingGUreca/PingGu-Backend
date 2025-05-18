@@ -12,3 +12,5 @@ EXPOSE 8080
 
 # 5. 컨테이너 시작 시 실행할 명령어
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENV SPRING_PROFILES_ACTIVE=prod
