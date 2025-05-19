@@ -21,7 +21,7 @@ public class AuthResponseUtil {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("None")
                 .maxAge(Duration.ofDays(14))
                 .build();
     }
@@ -32,6 +32,7 @@ public class AuthResponseUtil {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .sameSite("None")
                 .maxAge(0)
                 .build();
     }

@@ -29,4 +29,3 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.web.client: DEBUG
     org.springframework.http: DEBUG
-    
