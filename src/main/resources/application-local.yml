@@ -22,3 +22,10 @@ cloud:
       static: us-east-1
     stack:
       auto: false
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.client: DEBUG
+    org.springframework.http: DEBUG
